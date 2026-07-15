@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Animales en Inglés</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #4CAF50;
+            --accent: #FF9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .animal-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .animal-card:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+        }
+        
+        .animal-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .animal-info {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .animal-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .animal-info p {
+            font-size: 1.1rem;
+            color: #666;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .speak-btn {
+            margin-top: 10px;
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        
+        .modal-content img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 20px;
+        }
+        
+        .quiz-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 30px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        
+        .score {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .question {
+            font-size: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            min-height: 80px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .option-btn {
+            padding: 1.2rem;
+            font-size: 1.3rem;
+            border: 3px solid #ddd;
+            border-radius: 20px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .option-btn.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        .option-btn.wrong {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
+        .stars {
+            font-size: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: fall 3s linear forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            🐾 <span>Animal Fun</span>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="showSection('animals')">🐱 Animales</button>
+            <button class="nav-btn" onclick="showSection('quiz')">🎮 Quiz</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SECCIÓN ANIMALES -->
+        <section id="animals" class="section active">
+            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; color: var(--primary);">
+                Aprende los animales en inglés 🦁
+            </h1>
+            <div class="animals-grid" id="animalsGrid">
+                <!-- Se llenará con JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN QUIZ -->
+        <section id="quiz" class="section">
+            <div class="quiz-container">
+                <div class="score">
+                    Puntuación: <span id="score">0</span> / <span id="total">0</span>
+                </div>
+                
+                <div id="questionContainer">
+                    <div class="question" id="question">
+                        ¿Cuál es este animal?
+                    </div>
+                    <img id="quizImage" style="width: 250px; height: 250px; object-fit: contain; margin: 20px auto; display: block; border-radius: 20px;" />
+                    <div class="options" id="options">
+                        <!-- Opciones generadas por JS -->
+                    </div>
+                </div>
+                
+                <div id="result" style="display: none; text-align: center; margin-top: 2rem;">
+                    <div class="stars" id="stars">⭐⭐⭐</div>
+                    <button onclick="nextQuestion()" style="padding: 15px 40px; font-size: 1.3rem; background: var(--primary); color: white; border: none; border-radius: 50px; cursor: pointer;">
+                        Siguiente animal →
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="animalModal">
+        <div class="modal-content">
+            <button onclick="closeModal()" style="float: right; font-size: 2rem; background: none; border: none; cursor: pointer;">×</button>
+            <img id="modalImage" src="" alt="">
+            <h2 id="modalEnglish"></h2>
+            <p id="modalSpanish" style="font-size: 1.4rem; color: #666;"></p>
+            <button onclick="speakCurrent()" class="speak-btn" style="font-size: 1.4rem; padding: 15px 30px;">
+                🔊 Escuchar en inglés
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        ¡Diviértete aprendiendo! ✨ Hecho para niños
+    </footer>
+
+    <script>
+        // Lista de animales
+        const animals = [
+            {
+                name: "Dog",
+                spanish: "Perro",
+                emoji: "🐶",
+                image: "perro.jpg"
+            },
+            {
+                name: "Cat",
+                spanish: "Gato",
+                emoji: "🐱",
+                image: "gato.jpg"
+            },
+            {
+                name: "Lion",
+                spanish: "León",
+                emoji: "🦁",
+                image: "leon.jpg"
+            },
+            {
+                name: "Elephant",
+                spanish: "Elefante",
+                emoji: "🐘",
+                image: "elefante.jpg"
+            },
+            {
+                name: "Monkey",
+                spanish: "Mono",
+                emoji: "🐵",
+                image: "mono.jpg"
+            },
+            {
+                name: "Bird",
+                spanish: "Pájaro",
+                emoji: "🐦",
+                image: "pajaro.jpg"
+            },
+            {
+                name: "Fish",
+                spanish: "Pez",
+                emoji: "🐟",
+                image: "pescado.jpg"
+            },
+            {
+                name: "Horse",
+                spanish: "Caballo",
+                emoji: "🐴",
+                image: "caballo.jpg"
+            },
+            {
+                name: "Cow",
+                spanish: "Vaca",
+                emoji: "🐮",
+                image: "vaca.jpg"
+            },
+            {
+                name: "Pig",
+                spanish: "Cerdo",
+                emoji: "🐷",
+                image: "cerdo.jpg"
+            },
+            {
+                name: "Rabbit",
+                spanish: "Conejo",
+                emoji: "🐰",
+                image: "conejo.jpg"
+            },
+            {
+                name: "Tiger",
+                spanish: "Tigre",
+                emoji: "🐯",
+                image: "tigre.jpg"
+            },
+            {
+                name: "crow",
+                spanish: "cuervo",
+                emoji: "🐦‍⬛",
+                image: "cuervo.jpg"
+            }
+        ];
+
+        let currentAnimal = null;
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let quizQuestions = [];
+
+        // Renderizar tarjetas de animales
+        function renderAnimals() {
+            const grid = document.getElementById('animalsGrid');
+            grid.innerHTML = '';
+            
+            animals.forEach(animal => {
+                const card = document.createElement('div');
+                card.className = 'animal-card';
+                card.innerHTML = `
+                    <img src="${animal.image}" alt="${animal.name}">
+                    <div class="animal-info">
+                        <h3>${animal.emoji} ${animal.name}</h3>
+                        <p>${animal.spanish}</p>
+                        <button class="speak-btn" onclick="event.stopImmediatePropagation(); speak('${animal.name}')">
+                            🔊 Escuchar
+                        </button>
+                    </div>
+                `;
+                card.onclick = () => showAnimalModal(animal);
+                grid.appendChild(card);
+            });
+        }
+
+        // Mostrar modal
+        function showAnimalModal(animal) {
+            currentAnimal = animal;
+            document.getElementById('modalImage').src = animal.image;
+            document.getElementById('modalEnglish').textContent = animal.name;
+            document.getElementById('modalSpanish').textContent = animal.spanish;
+            document.getElementById('animalModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('animalModal').style.display = 'none';
+        }
+
+        // Hablar con voz (Web Speech API)
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.1;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert("Tu navegador no soporta voz 😔");
+            }
+        }
+
+        function speakCurrent() {
+            if (currentAnimal) speak(currentAnimal.name);
+        }
+
+        // Mostrar sección
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.nav-btn');
+            if (section === 'animals') buttons[0].classList.add('active');
+            else buttons[1].classList.add('active');
+            
+            if (section === 'quiz' && quizQuestions.length === 0) {
+                startQuiz();
+            }
+        }
+
+        // Iniciar Quiz
+        function startQuiz() {
+            score = 0;
+            currentQuestionIndex = 0;
+            document.getElementById('score').textContent = '0';
+            
+            // Crear 8 preguntas aleatorias
+            quizQuestions = [...animals]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 8);
+            
+            document.getElementById('total').textContent = quizQuestions.length;
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex >= quizQuestions.length) {
+                endQuiz();
+                return;
+            }
+            
+            const animal = quizQuestions[currentQuestionIndex];
+            document.getElementById('quizImage').src = animal.image;
+            
+            // Generar opciones
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            // Opciones correctas e incorrectas
+            let options = [animal.name];
+            
+            // Añadir 3 respuestas incorrectas
+            const wrongAnswers = animals
+                .filter(a => a.name !== animal.name)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(a => a.name);
+            
+            options = [...options, ...wrongAnswers];
+            options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(option, animal.name);
+                optionsContainer.appendChild(btn);
+            });
+            
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+        }
+
+        function checkAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            let correctBtn = null;
+            
+            buttons.forEach(btn => {
+                if (btn.textContent === correct) {
+                    correctBtn = btn;
+                    btn.classList.add('correct');
+                }
+                btn.disabled = true;
+                
+                if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            if (selected === correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+                
+                // Confeti rápido
+                createConfetti();
+            }
+            
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            currentQuestionIndex++;
+        }
+
+        function endQuiz() {
+            const container = document.querySelector('.quiz-container');
+            container.innerHTML = `
+                <div style="text-align: center; padding: 3rem;">
+                    <h1>¡Felicidades! 🎉</h1>
+                    <p style="font-size: 4rem; margin: 1rem 0;">${score}/${quizQuestions.length}</p>
+                    <p style="font-size: 1.5rem;">${score >= 6 ? '¡Eres un experto!' : score >= 4 ? '¡Muy bien!' : '¡Sigue practicando!'}</p>
+                    <button onclick="restartQuiz()" style="margin-top: 2rem; padding: 18px 50px; font-size: 1.4rem; background: var(--accent); color: white; border: none; border-radius: 50px; cursor: pointer;">
+                        Volver a jugar
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            const container = document.querySelector('.quiz-container');
+            container.innerHTML = `
+                <div class="score">
+                    Puntuación: <span id="score">0</span> / <span id="total">0</span>
+                </div>
+                
+                <div id="questionContainer">
+                    <div class="question" id="question">
+                        ¿Cuál es este animal?
+                    </div>
+                    <img id="quizImage" style="width: 250px; height: 250px; object-fit: contain; margin: 20px auto; display: block; border-radius: 20px;" />
+                    <div class="options" id="options"></div>
+                </div>
+                
+                <div id="result" style="display: none; text-align: center; margin-top: 2rem;">
+                    <div class="stars" id="stars">⭐⭐⭐</div>
+                    <button onclick="nextQuestion()" style="padding: 15px 40px; font-size: 1.3rem; background: var(--primary); color: white; border: none; border-radius: 50px; cursor: pointer;">
+                        Siguiente animal →
+                    </button>
+                </div>
+            `;
+            startQuiz();
+        }
+
+        // Crear confeti
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = ['#FF9800', '#4CAF50', '#2196F3', '#E91E63'][Math.floor(Math.random()*4)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.opacity = Math.random() + 0.5;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Inicializar
+        window.onload = () => {
+            renderAnimals();
+            
+            // Cerrar modal con Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    const modal = document.getElementById('animalModal');
+                    if (modal.style.display === 'flex') closeModal();
+                }
+            });
+            
+            // Mensaje de bienvenida
+            setTimeout(() => {
+                if ('speechSynthesis' in window) {
+                    const welcome = new SpeechSynthesisUtterance("Hello! Let's learn animals together!");
+                    welcome.lang = 'en-US';
+                    speechSynthesis.speak(welcome);
+                }
+            }, 800);
+        };
+    </script>
+</body>
+</html>
