@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Familia en Inglés</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: white;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 5%;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .emoji {
+            font-size: 4.5rem;
+            padding: 1.5rem 0;
+            background: #fff3e0;
+        }
+        
+        .info {
+            padding: 1rem;
+        }
+        
+        .info h3 {
+            color: #4CAF50;
+            margin-bottom: 0.3rem;
+        }
+        
+        .speak-btn {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>👨‍👩‍👧 La Familia en Inglés</h2>
+        <a href="index.html" style="text-decoration:none; font-size:1.2rem;">🏠 Inicio</a>
+    </header>
+
+    <div class="grid" id="familyGrid"></div>
+
+    <script>
+        const family = [
+            { name: "Mother", spanish: "Madre / Mamá", emoji: "👩" },
+            { name: "Father", spanish: "Padre / Papá", emoji: "👨" },
+            { name: "Grandmother", spanish: "Abuela", emoji: "👵" },
+            { name: "Grandfather", spanish: "Abuelo", emoji: "👴" },
+            { name: "Brother", spanish: "Hermano", emoji: "👦" },
+            { name: "Sister", spanish: "Hermana", emoji: "👧" },
+            { name: "Uncle", spanish: "Tío", emoji: "🧔" },
+            { name: "Aunt", spanish: "Tía", emoji: "👩‍🦰" },
+            { name: "Cousin", spanish: "Primo / Prima", emoji: "🧒" },
+            { name: "Baby", spanish: "Bebé", emoji: "👶" },
+            { name: "Son", spanish: "Hijo", emoji: "👦" },
+            { name: "Daughter", spanish: "Hija", emoji: "👧" }
+        ];
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        const grid = document.getElementById('familyGrid');
+        
+        family.forEach(member => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="emoji">${member.emoji}</div>
+                <div class="info">
+                    <h3>${member.name}</h3>
+                    <p>${member.spanish}</p>
+                    <button class="speak-btn" onclick="speak('${member.name}')">🔊 Escuchar</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
