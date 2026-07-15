@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colores en Inglés</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
+        body { font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); margin:0; }
+        header { background:white; padding:1rem 5%; box-shadow:0 4px 15px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1.5rem; padding: 2rem 5%; }
+        .card { background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.1); text-align:center; }
+        .color-box { height: 160px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.5); }
+        .info { padding:1rem; }
+        .speak-btn { background:#FF9800; color:white; border:none; padding:8px 16px; border-radius:30px; margin-top:8px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>🎨 Colores en Inglés</h2>
+        <a href="index.html">🏠 Inicio</a>
+    </header>
+
+    <div class="grid" id="colorsGrid"></div>
+
+    <script>
+        const colors = [
+            { name: "Red", spanish: "Rojo", color: "#f44336" },
+            { name: "Blue", spanish: "Azul", color: "#2196F3" },
+            { name: "Yellow", spanish: "Amarillo", color: "#FFEB3B" },
+            { name: "Green", spanish: "Verde", color: "#4CAF50" },
+            { name: "Purple", spanish: "Morado", color: "#9C27B0" },
+            { name: "Orange", spanish: "Naranja", color: "#FF9800" }
+        ];
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+
+        const grid = document.getElementById('colorsGrid');
+        colors.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="color-box" style="background: ${item.color};">${item.name}</div>
+                <div class="info">
+                    <h3>${item.name}</h3>
+                    <p>${item.spanish}</p>
+                    <button class="speak-btn" onclick="speak('${item.name}')">🔊 Escuchar</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
