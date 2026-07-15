@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Números en Inglés</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: white;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 5%;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .number-box {
+            font-size: 4rem;
+            font-weight: 700;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+        
+        .info {
+            padding: 1rem;
+        }
+        
+        .speak-btn {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-top: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>🔢 Números en Inglés</h2>
+        <a href="index.html" style="text-decoration:none; font-size:1.2rem;">🏠 Inicio</a>
+    </header>
+
+    <div class="grid" id="numbersGrid"></div>
+
+    <script>
+        const numbers = [
+            { num: 1, name: "One", spanish: "Uno" },
+            { num: 2, name: "Two", spanish: "Dos" },
+            { num: 3, name: "Three", spanish: "Tres" },
+            { num: 4, name: "Four", spanish: "Cuatro" },
+            { num: 5, name: "Five", spanish: "Cinco" },
+            { num: 6, name: "Six", spanish: "Seis" },
+            { num: 7, name: "Seven", spanish: "Siete" },
+            { num: 8, name: "Eight", spanish: "Ocho" },
+            { num: 9, name: "Nine", spanish: "Nueve" },
+            { num: 10, name: "Ten", spanish: "Diez" },
+            { num: 11, name: "Eleven", spanish: "Once" },
+            { num: 12, name: "Twelve", spanish: "Doce" },
+            { num: 13, name: "Thirteen", spanish: "Trece" },
+            { num: 14, name: "Fourteen", spanish: "Catorce" },
+            { num: 15, name: "Fifteen", spanish: "Quince" },
+            { num: 16, name: "Sixteen", spanish: "Dieciséis" },
+            { num: 17, name: "Seventeen", spanish: "Diecisiete" },
+            { num: 18, name: "Eighteen", spanish: "Dieciocho" },
+            { num: 19, name: "Nineteen", spanish: "Diecinueve" },
+            { num: 20, name: "Twenty", spanish: "Veinte" }
+        ];
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        const grid = document.getElementById('numbersGrid');
+        
+        numbers.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="number-box">${item.num}</div>
+                <div class="info">
+                    <h3>${item.name}</h3>
+                    <p>${item.spanish}</p>
+                    <button class="speak-btn" onclick="speak('${item.name}')">🔊 Escuchar</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
